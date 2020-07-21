@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 
 Route::get('/catalog', function(){
-    return view('vello');
+    return view('catalog');
 });
+
 Route::get('catalog/all', 'CategoryController@allData')->name('contact-data');
+Route::get('catalog', 'ProductCategoryController@index');

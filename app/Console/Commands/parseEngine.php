@@ -23,10 +23,10 @@ class parseEngine extends Command
     {
         $crawler = new Crawler(file_get_contents($this->url));
         $categoryData = $this->getCategories($crawler);
-        $products = $this->getItems(array_slice($categoryData['thirdCategories'],102,16));
+        $products = $this->getItems($categoryData['thirdCategories']);
         $getJSON = $this->getCrankMechanism($products );
-        $products = $this->getItems(array_slice($categoryData['thirdCategories'],118,16));
-        $getJSON = $this->getGasDistributionMechanism($products );
+//        $products = $this->getItems(array_slice($categoryData['thirdCategories'],118,16));
+//        $getJSON = $this->getGasDistributionMechanism($products );
         dd($products);
 
 
@@ -157,7 +157,7 @@ class parseEngine extends Command
     public function getGasDistributionMechanism($products){
 
         //cooling system
-        $getFile = fopen('resultsFolder/GasDistributionMechanism.json', 'a+');
+        $getFile = fopen('resultsFolder/full.json', 'a+');
         $writeFile = fwrite($getFile,json_encode($products,  JSON_UNESCAPED_UNICODE));
         $closeFile = fclose($getFile);
         return $getFile;
@@ -165,7 +165,7 @@ class parseEngine extends Command
     public function getCrankMechanism($products){
 
         //Supply system
-        $getFile = fopen('resultsFolder/CrankMechanism.json', 'a+');
+        $getFile = fopen('resultsFolder/full.json', 'a+');
         $writeFile = fwrite($getFile,json_encode($products,  JSON_UNESCAPED_UNICODE));
         $closeFile = fclose($getFile);
         return $getFile;
