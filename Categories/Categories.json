@@ -1,0 +1,11 @@
+{
+
+    "categories": {
+        "Запчасти для погрузчиков": "/product_list/zapchasti-pogruzchikov/",
+        "Запчасти для двигателей": "/product_list/zapchasti-dvigateley/",
+        "Шины, колеса, диски": "/product_list/shiny-diski/",
+        "Запчасти для гидробортов": "/product_list/zapchasti-dlya-gidrobortov/",
+        "Запчасти для дизельных генераторов": "/product_list/zapchasti-dlya-dizelnykh-generatorov/"
+
+    }
+}

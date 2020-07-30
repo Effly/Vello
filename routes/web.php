@@ -21,4 +21,27 @@ Route::get('/catalog', function(){
 });
 
 Route::get('catalog/all', 'CategoryController@allData')->name('contact-data');
-Route::get('catalog', 'ProductCategoryController@index');
+Route::get('catalog', 'ProductCategoryController@catalog');
+
+
+//Route::get('/catalog/{category}', function(){
+//    return view('products');
+//})->name('product');
+
+Route::get('catalog/{categorySlug}', 'ProductCategoryController@getCatProduct')->name('catalog');
+Route::get('catalog/{categorySlug}/{subcategorySlug}', 'ProductCategoryController@getCatSubProduct')->name('catalog.sub');
+Route::get('catalog/{categorySlug}/{subcategorySlug}/{thirdcategorySlug}', 'ProductCategoryController@getCatThirdProducts')->name('catalog.third');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('register/confirm/{token}', 'Auth\RegisterController@confirmEmail');
+
+// Admin routes
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function() {
+    
+    Route::get('/', 'DashboardController@index')->name('admin.dashboard');
+
+
+});
+

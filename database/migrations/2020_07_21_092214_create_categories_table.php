@@ -17,8 +17,9 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->integer('parent_id')->nullable();
             $table->string('name');
-            $table->text('seo');
-            $table->text('desc');
+            $table->text('seo')->nullable();
+            $table->text('desc')->nullable();
+            $table->string('slug');
 
         });
     }

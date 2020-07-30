@@ -23,11 +23,11 @@ class parseEngine extends Command
     {
         $crawler = new Crawler(file_get_contents($this->url));
         $categoryData = $this->getCategories($crawler);
-        $products = $this->getItems($categoryData['thirdCategories']);
-        $getJSON = $this->getCrankMechanism($products );
+        //$products = $this->getItems($categoryData['thirdCategories']);
+        //$getJSON = $this->getCrankMechanism($products );
 //        $products = $this->getItems(array_slice($categoryData['thirdCategories'],118,16));
 //        $getJSON = $this->getGasDistributionMechanism($products );
-        dd($products);
+        dd($categoryData);
 
 
     }

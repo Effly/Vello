@@ -24,7 +24,7 @@ class Products extends Migration
             $table->string('brand');
             $table->string('cost');
             $table->string('model');
-            $table->string('desc');
+            $table->text('desc');
         });
     }
 

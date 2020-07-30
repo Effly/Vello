@@ -38,7 +38,7 @@ class parse extends Command
         // $prepareStr = fn($node) => str_replace("\n", '', $node->text());
         $prepareStr = function ($node) {
             return str_replace("\n", '', $node->text());
-            //return $node->text();
+
         };
         $categories = [];
         $subCategories = [];
