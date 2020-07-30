@@ -39,7 +39,7 @@ Route::get('register/confirm/{token}', 'Auth\RegisterController@confirmEmail');
 
 // Admin routes
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function() {
-    
+
     Route::get('/', 'DashboardController@index')->name('admin.dashboard');
 
 
