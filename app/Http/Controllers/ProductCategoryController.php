@@ -17,8 +17,7 @@ class ProductCategoryController extends Controller
     }
 
 
-
-    public function getCatThirdProducts(Product $productCategories,$categorySlug,$subcategorySlug, $thirdcategorySlug,Request $request,Property $property)
+    public function getCatThirdProducts(Product $productCategories, $categorySlug, $subcategorySlug, $thirdcategorySlug, Request $request, Property $property)
     {
         $products = $productCategories->getCatProducts($thirdcategorySlug);
         $properties = $property->getBrands($thirdcategorySlug);
@@ -29,83 +28,73 @@ class ProductCategoryController extends Controller
                 $products = $products->where('brand',$property->brand);
 
             }
-//            $products = $productCategories->getCatProducts($thirdcategorySlug)->get();
 
         }
-            return view('products', ['products' => $products->get(), 'properties'=>$properties]);
-//        if($request->price_from && $request->price_to){
-//            $products = $products->where('cost','>=', $request->price_from)->where('cost','<=', $request->price_to)->get();
-//            return view('products', ['products' => $products, 'properties'=>$properties]);
-//        }
-//        elseif ($request->price_to){
-//            $products = $products->where('cost','<=', $request->price_to)->get();
-//            return view('products', ['products' => $products, 'properties'=>$properties]);
-//        }elseif ($request->price_from){
-//            $products = $products->where('cost','>=', $request->price_from)->get();
-//
-//            return view('products', ['products' => $products, 'properties'=>$properties]);
-//        }else{
-//            $products = $productCategories->getCatProducts($thirdcategorySlug)->get();
-//            return view('products', ['products' => $products, 'properties'=>$properties]);
-//        }
-//        if ($request->price_to){
-//            $products = $products->where('cost','<=', $request->price_to)->get();
-//        }
+        if ($request->price_from) {
+            $products = $products->where('cost', '>=', $request->price_from);
+        }
+        if ($request->price_to) {
+            $products = $products->where('cost', '<=', $request->price_to);
 
+        }
+
+
+        return view('products', ['products' => $products->get(), 'properties' => $properties]);
     }
 
-    public function getCatSubProduct(Product $productCategories,ProductCategory $productCategory,$categorySlug,$subcategorySlug,Request $request){
+    public function getCatSubProduct(Product $productCategories, ProductCategory $productCategory, $categorySlug, $subcategorySlug, Request $request)
+    {
 
         $products = $productCategories->getCatProducts($subcategorySlug);
-        if($products->count()>0) {
-            if($request->price_from && $request->price_to){
-                $products = $products->where('cost','>=', $request->price_from)->where('cost','<=', $request->price_to)->get();
+        if ($products->count() > 0) {
+            if ($request->price_from && $request->price_to) {
+                $products = $products->where('cost', '>=', $request->price_from)->where('cost', '<=', $request->price_to)->get();
                 return view('products', ['products' => $products]);
-            }elseif ($request->price_to){
-                $products = $products->where('cost','<=', $request->price_to)->get();
+            } elseif ($request->price_to) {
+                $products = $products->where('cost', '<=', $request->price_to)->get();
                 return view('products', ['products' => $products]);
-            }elseif ($request->price_from){
-                $products = $products->where('cost','>=', $request->price_from)->get();
+            } elseif ($request->price_from) {
+                $products = $products->where('cost', '>=', $request->price_from)->get();
 
                 return view('products', ['products' => $products]);
-            }else{
+            } else {
                 $products = $productCategories->getCatProducts($subcategorySlug)->get();
                 return view('products', ['products' => $products]);
             }
 //            return view('products', ['products' => $products]);
-        }else{
+        } else {
             $rootCategories = $productCategory->subCategories($subcategorySlug);
 
             return view('categories', ['rootCategories' => $rootCategories,]);
         }
     }
 
-    public function getCatProduct(Product $productCategories,$categorySlug,Request $request){
+    public function getCatProduct(Product $productCategories, $categorySlug, Request $request)
+    {
         $products = $productCategories->getCatProducts($categorySlug);
-        if($request->price_from && $request->price_to){
-            $products = $products->where('cost','>=', $request->price_from)->where('cost','<=', $request->price_to)->get();
+        if ($request->price_from && $request->price_to) {
+            $products = $products->where('cost', '>=', $request->price_from)->where('cost', '<=', $request->price_to)->get();
             return view('products', ['products' => $products]);
-        }
-        elseif ($request->price_to){
-            $products = $products->where('cost','<=', $request->price_to)->get();
+        } elseif ($request->price_to) {
+            $products = $products->where('cost', '<=', $request->price_to)->get();
             return view('products', ['products' => $products]);
-        }elseif ($request->price_from){
-            $products = $products->where('cost','>=', $request->price_from)->get();
+        } elseif ($request->price_from) {
+            $products = $products->where('cost', '>=', $request->price_from)->get();
 
             return view('products', ['products' => $products]);
-        }else{
+        } else {
             $products = $productCategories->getCatProducts($categorySlug)->get();
             return view('products', ['products' => $products]);
         }
 //        return view('products', ['products' => $products]);
     }
 
-    public function getProduct($product_slug,Product $productCategories){
+    public function getProduct($product_slug, Product $productCategories)
+    {
 
-        $product =$productCategories->getProduct($product_slug);
-        return view('product',['product'=>$product] );
+        $product = $productCategories->getProduct($product_slug);
+        return view('product', ['product' => $product]);
     }
-
 
 
 }
