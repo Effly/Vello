@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Categories;
+use App\ProductCategory;
+use App\Product;
 
 class DashboardController extends Controller
 {
@@ -24,6 +27,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('catalog');
+        return view('admin.master');
     }
 }

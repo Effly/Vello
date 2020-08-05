@@ -7,12 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = 'products';
+
+    protected $fillable = [
+        'title','code','brand','cost','model','slug','desc','cat_slug'
+    ];
+
     public function category(){
-        return $this->belongsTo('ProductCategory','parent_id')->get();
+        return $this->belongsTo($this,'cat_slug')->get();
     }
 
-    public function getProductWithCats($cat_id){
-        return $this->where('parent_id',$cat_id)->get();
+
+
+    public function getCatProducts($cat_slug){
+
+        return $this->where('cat_slug', $cat_slug);
     }
 
+
+    public function getPriceForCount(){
+
+            return $this->pivot->count *  $this->cost;
+
+
+    }
+    public function getProduct($product_slug){
+        return $this->where('slug',$product_slug)->get();
+    }
 }

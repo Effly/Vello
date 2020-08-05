@@ -16,16 +16,10 @@ class CheckIfAdmin
      */
     public function handle($request, Closure $next)
     {
-        $user = $request->user();
-
-        if (!isset($user)) {
-            return redirect('admin/login');
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            return $next($request);
         }
 
-        if (!$user->isAdmin()) {
-            return redirect('/');
-        }
-
-        return $next($request);
+        return redirect('admin/login');
     }
 }

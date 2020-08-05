@@ -1,4 +1,9 @@
+@extends('layouts.layout')
 <h1>Catalog</h1>
+
+@if(session()->has('success'))
+<p class="alert alert-success"> {{session()->get('success')}} </p>
+@endif
 <ul>
     @foreach($rootCategories as $rootCategory)
         <li>

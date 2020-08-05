@@ -86,51 +86,83 @@ class toBD extends Command
 //            }
 //    }
 //}
-
+//foreach ($countObls as $countObl => $value)
+//{
+//foreach ($mains as $main)
+//{
+//if ($main["область"] == $countObl)
+//{
+//$catID = wp_create_category($countObl, 106);
+//if (!post_exists($main["Населенный пункт"]))
+//{
+//    //Массив атрибутов для создания поста
+//$post_data = array(
+//'post_title' => $main["Населенный пункт"],
+//'post_content' => '',
+//'post_status' => 'publish',
+//'post_author' => 1,
+//'post_category' => array(106, $catID) //ID категории
+//);
+//    //Добавление постаm
+//$last_post_id = wp_insert_post($post_data);
+//echo 'Пост [' . $last_post_id . '] - ' . $main["Населенный пункт"] . ' создан!<br>';
+//foreach ($countPunkts as $countPunkt => $val)
+//{
+//if ($countPunkt == $main["Населенный пункт"])
+//{
+//if (have_rows())
+//{
+//while (have_rows('offices'))
+//{
+//the_row();
+//$i = 1;
+//$row = array(
+//'type' => $main["Тип"],
+//'address' => $main["Адрес"],
+//'mainPhone' => $main["Телефон"],
+//'email' => $main["E-mail для заявок(основной)"],
+//'othPhones' => $main["Телефоны дополнительные"],
+//'othEmail' => $main["E-mail дополнительные"],
+//'workTime' => $main["Время работы"]
+//);
+//update_row('offices', $i, $row, $last_post_id);
+//$i++;
+//}
+//}
+//}
+//}
+//}
+//}
+//}
+//}
     public function todo()
     {
+        $full = json_decode(file_get_contents('D:\op\OSPanel\domains\parse\resultsFolder\HydraulicPumpDrive.json'), true);
+        $fetchBrandCat = function ($item){
+          return [
+              'brand'=>$item['brand:'],
+//              'firstCat' => $item[ "firstSubcategory: "],
+//              'subCat' => $item[ "secondSubcategory: "],
+//              'thirdCat' => $item[ "thirdSubcategory: "],
+          ];
+        };
+        foreach ($full as $category) {
+            foreach ($category as $items) {
+                foreach ($items as $item) {
 
-        foreach ($countObls as $countObl => $value) {
-            foreach ($mains as $main) {
-                if ($main["область"] == $countObl) {
-                    $catID = wp_create_category($countObl, 106);
-                    if (!post_exists($main["Населенный пункт"])) {
-                        //Массив атрибутов для создания поста
-                        $post_data = array(
-                            'post_title' => $main["Населенный пункт"],
-                            'post_content' => '',
-                            'post_status' => 'publish',
-                            'post_author' => 1,
-                            'post_category' => array(106, $catID) //ID категории
-                        );
-                        //Добавление постаm
-                        $last_post_id = wp_insert_post($post_data);
-                        echo 'Пост [' . $last_post_id . '] - ' . $main["Населенный пункт"] . ' создан!<br>';
-                        foreach ($countPunkts as $countPunkt => $val) {
-                            if ($countPunkt == $main["Населенный пункт"]) {
-                                if (have_rows()) {
-                                    while (have_rows('offices')) {
-                                        the_row();
-                                        $i = 1;
-                                        $row = array(
-                                            'type' => $main["Тип"],
-                                            'address' => $main["Адрес"],
-                                            'mainPhone' => $main["Телефон"],
-                                            'email' => $main["E-mail для заявок(основной)"],
-                                            'othPhones' => $main["Телефоны дополнительные"],
-                                            'othEmail' => $main["E-mail дополнительные"],
-                                            'workTime' => $main["Время работы"]
-                                        );
-                                        update_row('offices', $i, $row, $last_post_id);
-                                        $i++;
-                                    }
-                                }
-                            }
-                        }
+                    $brands[] = $fetchBrandCat($item);
+                    foreach ($brands as $brand){
+                        $uniq[] = $brand;
+
                     }
+//                    $uniq = array_unique($brand);
+//                    var_dump($uniq);
                 }
+
             }
         }
+        dd($uniq);
+
     }
 
 }

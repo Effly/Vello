@@ -12,25 +12,31 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 
-Route::get('/catalog', function(){
-    return view('catalog');
-});
+
 
 Route::get('catalog/all', 'CategoryController@allData')->name('contact-data');
-Route::get('catalog', 'ProductCategoryController@catalog');
+Route::get('catalog', 'ProductCategoryController@catalog')->name('catalog-main');
 
 
 //Route::get('/catalog/{category}', function(){
 //    return view('products');
 //})->name('product');
 
-Route::get('catalog/{categorySlug}', 'ProductCategoryController@getCatProduct')->name('catalog');
-Route::get('catalog/{categorySlug}/{subcategorySlug}', 'ProductCategoryController@getCatSubProduct')->name('catalog.sub');
-Route::get('catalog/{categorySlug}/{subcategorySlug}/{thirdcategorySlug}', 'ProductCategoryController@getCatThirdProducts')->name('catalog.third');
+Route::get('catalog/{categorySlug?}', 'ProductCategoryController@getCatProduct')->name('catalog');
+Route::get('catalog/{categorySlug?}/{subcategorySlug?}', 'ProductCategoryController@getCatSubProduct')->name('catalog.sub');
+Route::get('catalog/{categorySlug?}/{subcategorySlug?}/{thirdcategorySlug?}', 'ProductCategoryController@getCatThirdProducts')->name('catalog.third');
+Route::get('product/{product}', 'ProductCategoryController@getProduct')->name('product');
+
+
+Route::get('/basket', 'BasketController@basket')->name('basket');
+Route::get('/basket/place', 'BasketController@basketPlace')->name('basket-place');
+Route::post('/basket/add/{id}', 'BasketController@basketAdd')->name('basket-add');
+Route::post('/basket/remove/{id}', 'BasketController@basketRemove')->name('basket-remove');
+Route::post('/basket/place', 'BasketController@basketConfirm')->name('basket-confirm');
 
 Auth::routes();
 
@@ -40,8 +46,10 @@ Route::get('register/confirm/{token}', 'Auth\RegisterController@confirmEmail');
 // Admin routes
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function() {
 
-    Route::get('/', 'DashboardController@index')->name('admin.dashboard');
+    Route::get('/login', 'DashboardController@index')->name('admin.dashboard');
 
 
+    Route::resource('shares','ShareController');
 });
+
 

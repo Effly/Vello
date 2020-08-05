@@ -11,17 +11,29 @@ class ProductCategory extends Model
     public function ProductCategory(){
         return $this->hasMany($this, 'parent_id');
     }
-
     public function rootCategories(){
         return $this->where('parent_id', 0)->with('ProductCategory')->get();
     }
 
-    public function subCategories($slug){
-        return $this->where('slug', $slug)->with('ProductCategory')->get();
+
+
+    public function getThirdCatProducts($thirdcategorySlug){
+        return $this->where('cat_slug', $thirdcategorySlug)->get();
+    }
+
+
+    public function subCategories($id){
+        return $this->where('parent_id', $id)->with('ProductCategory')->get();
     }
 
     public function products(){
-        return $this->hasMany('Product','parent_id');
+        return $this->hasMany($this,'cat_slug');
+    }
+    public function brands(){
+        return $this->hasMany($this,'cat_slug');
     }
 
+    public function getBrands($cat_slug){
+        return $this->where('cat_slug', $cat_slug)->with('brands')->get();
+    }
 }
