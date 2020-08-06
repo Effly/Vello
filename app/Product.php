@@ -33,4 +33,14 @@ class Product extends Model
     public function getProduct($product_slug){
         return $this->where('slug',$product_slug)->get();
     }
+
+    public function getFilteredProduct($cat_slug,$request){
+
+        return $this->where('cat_slug', $cat_slug)->where('brand',$request);
+//            ->where(function ($query) use ($request){
+//            $query->where(function ($q) use ($request){
+//
+//            });
+//        });
+    }
 }

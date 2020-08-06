@@ -1,3 +1,5 @@
+@extends('layouts.layout')
+
 <h1></h1>
 @foreach($rootCategories as $rootCategory)
     <li>

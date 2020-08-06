@@ -47,7 +47,7 @@ Route::get('register/confirm/{token}', 'Auth\RegisterController@confirmEmail');
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'admin'], function() {
 
     Route::get('/login', 'DashboardController@index')->name('admin.dashboard');
-
+    Route::get('/orders', 'OrderController@index')->name('orders');
 
     Route::resource('shares','ShareController');
 });

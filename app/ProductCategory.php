@@ -22,7 +22,10 @@ class ProductCategory extends Model
     }
 
 
-    public function subCategories($id){
+    public function subCategories($slug){
+        return $this->where('slug', $slug)->first();
+    }
+    public function getChildCats($id){
         return $this->where('parent_id', $id)->with('ProductCategory')->get();
     }
 

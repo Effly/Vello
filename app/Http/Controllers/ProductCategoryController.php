@@ -6,6 +6,7 @@ use App\Categories;
 use App\ProductCategory;
 use App\Product;
 use App\Property;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
@@ -19,74 +20,105 @@ class ProductCategoryController extends Controller
 
     public function getCatThirdProducts(Product $productCategories, $categorySlug, $subcategorySlug, $thirdcategorySlug, Request $request, Property $property)
     {
-        $products = $productCategories->getCatProducts($thirdcategorySlug);
+
         $properties = $property->getBrands($thirdcategorySlug);
 
-        foreach ($properties as $property){
+        if (count($request->all()) >0) {
+            $allFiltersProducts = new Collection();
+            foreach ($properties as $property) {
+                if ($request->has($property->brand)) {
+                    $filter = $productCategories->getFilteredProduct($thirdcategorySlug, $property->brand);
+                    if ($request->price_from) {
+                        $filter = $filter->where('cost', '>=', $request->price_from);
+                    }
+                    if ($request->price_to) {
+                        $filter = $filter->where('cost', '<=', $request->price_to);
 
-            if ($request->has($property->brand)){
-                $products = $products->where('brand',$property->brand);
+                    }
 
+                    $allFiltersProducts = $allFiltersProducts->merge($filter->get());
+
+                }
             }
-
-        }
-        if ($request->price_from) {
-            $products = $products->where('cost', '>=', $request->price_from);
-        }
-        if ($request->price_to) {
-            $products = $products->where('cost', '<=', $request->price_to);
-
+            return view('products', ['products' => $allFiltersProducts, 'properties' => $properties]);
+        } else {
+            $products = $productCategories->getCatProducts($thirdcategorySlug)->get();
+            return view('products', ['products' => $products, 'properties' => $properties]);
         }
 
 
-        return view('products', ['products' => $products->get(), 'properties' => $properties]);
     }
 
-    public function getCatSubProduct(Product $productCategories, ProductCategory $productCategory, $categorySlug, $subcategorySlug, Request $request)
+    public function getCatSubProduct(Product $productCategories, ProductCategory $productCategory, $categorySlug, $subcategorySlug, Request $request, Property $property)
     {
 
         $products = $productCategories->getCatProducts($subcategorySlug);
         if ($products->count() > 0) {
-            if ($request->price_from && $request->price_to) {
-                $products = $products->where('cost', '>=', $request->price_from)->where('cost', '<=', $request->price_to)->get();
-                return view('products', ['products' => $products]);
-            } elseif ($request->price_to) {
-                $products = $products->where('cost', '<=', $request->price_to)->get();
-                return view('products', ['products' => $products]);
-            } elseif ($request->price_from) {
-                $products = $products->where('cost', '>=', $request->price_from)->get();
+            $products = $productCategories->getCatProducts($subcategorySlug);
+            $properties = $property->getBrands($subcategorySlug);
+            if ($request) {
+                $allFiltersProducts = new Collection();
+                foreach ($properties as $property) {
+                    if ($request->has($property->brand)) {
+                        $filter = $productCategories->getFilteredProduct($subcategorySlug, $property->brand);
+                        if ($request->price_from) {
+                            $filter = $filter->where('cost', '>=', $request->price_from);
+                        }
+                        if ($request->price_to) {
+                            $filter = $filter->where('cost', '<=', $request->price_to);
 
-                return view('products', ['products' => $products]);
+                        }
+
+                        $allFiltersProducts = $allFiltersProducts->merge($filter->get());
+
+                    }
+                }
+                return view('products', ['products' => $allFiltersProducts, 'properties' => $properties]);
             } else {
-                $products = $productCategories->getCatProducts($subcategorySlug)->get();
-                return view('products', ['products' => $products]);
+                return view('products', ['products' => $products, 'properties' => $properties]);
             }
-//            return view('products', ['products' => $products]);
         } else {
             $rootCategories = $productCategory->subCategories($subcategorySlug);
+            $childCats = $productCategory->getChildCats($rootCategories->id);
 
-            return view('categories', ['rootCategories' => $rootCategories,]);
+            return view('categories', ['rootCategories' => $childCats,]);
         }
     }
 
-    public function getCatProduct(Product $productCategories, $categorySlug, Request $request)
+    public function getCatProduct(Product $productCategories, $categorySlug, Request $request, Property $property,ProductCategory $productCategory)
     {
         $products = $productCategories->getCatProducts($categorySlug);
-        if ($request->price_from && $request->price_to) {
-            $products = $products->where('cost', '>=', $request->price_from)->where('cost', '<=', $request->price_to)->get();
-            return view('products', ['products' => $products]);
-        } elseif ($request->price_to) {
-            $products = $products->where('cost', '<=', $request->price_to)->get();
-            return view('products', ['products' => $products]);
-        } elseif ($request->price_from) {
-            $products = $products->where('cost', '>=', $request->price_from)->get();
+        if ($products->count() > 0) {
+            $products = $productCategories->getCatProducts($categorySlug);
+            $properties = $property->getBrands($categorySlug);
+            if ($request) {
+                $allFiltersProducts = new Collection();
+                foreach ($properties as $property) {
+                    if ($request->has($property->brand)) {
+                        $filter = $productCategories->getFilteredProduct($categorySlug, $property->brand);
+                        if ($request->price_from) {
+                            $filter = $filter->where('cost', '>=', $request->price_from);
+                        }
+                        if ($request->price_to) {
+                            $filter = $filter->where('cost', '<=', $request->price_to);
 
-            return view('products', ['products' => $products]);
+                        }
+
+                        $allFiltersProducts = $allFiltersProducts->merge($filter->get());
+
+                    }
+                }
+                return view('products', ['products' => $allFiltersProducts, 'properties' => $properties]);
+            } else {
+                return view('products', ['products' => $products, 'properties' => $properties]);
+            }
         } else {
-            $products = $productCategories->getCatProducts($categorySlug)->get();
-            return view('products', ['products' => $products]);
+            $rootCategories = $productCategory->subCategories($categorySlug);
+            $childCats = $productCategory->getChildCats($rootCategories->id);
+
+            return view('categories', ['rootCategories' => $childCats,]);
         }
-//        return view('products', ['products' => $products]);
+
     }
 
     public function getProduct($product_slug, Product $productCategories)

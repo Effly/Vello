@@ -15,8 +15,13 @@ class Property extends Model
 
     public function getFilteredProduct($cat_slug,$request){
 
-        return $this->where('cat_slug', $cat_slug)->where('brand',$request)->with('category')->get();
+        return $this->where('cat_slug', $cat_slug)->where('brand',$request);
+//            ->where(function ($query) use ($request){
+//            $query->where(function ($q) use ($request){
+//
+//            });
+//        });
     }
-
+//запрос УсловиеКатегория и УсловиеБренд и ((УсловиеЦеныОт или УсловиеЦеныДо)или (УсловиеЦеныОт и УсловиеЦеныДо))
 
 }

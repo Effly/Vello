@@ -34,7 +34,7 @@
                     <li><a href="{{ route('shares.index') }}">Товары</a>
 
                     </li>
-                    <li><a href="">Заказы</a></li>
+                    <li><a href="{{ route('orders') }}">Заказы</a></li>
 
                 </ul>
 

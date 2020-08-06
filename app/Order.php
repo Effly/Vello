@@ -23,6 +23,7 @@ class Order extends Model
             $this->phone = $phone;
             $this->email = $email;
             $this->status = 1;
+            $this->sum_price = $this->getFullPrice();
             $this->save();
 
             session()->forget('order');
